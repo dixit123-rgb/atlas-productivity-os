@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Atlas — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .auth-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; background: var(--bg); }
+    .auth-card { width: 100%; max-width: 400px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--r-2xl); padding: 40px; box-shadow: var(--sh-xl); }
+    .auth-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; justify-content: center; }
+    .auth-brand .brand__name { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+    .auth-title { font-family: var(--font-display); font-size: 28px; font-weight: 700; margin-bottom: 8px; text-align: center; letter-spacing: -0.02em; }
+    .auth-sub { color: var(--fg-muted); text-align: center; margin-bottom: 32px; font-size: 14px; }
+    .auth-toggle { text-align: center; margin-top: 24px; font-size: 13px; color: var(--fg-muted); }
+    .auth-toggle button { color: var(--accent); font-weight: 600; background: none; border: none; cursor: pointer; padding: 0; font-size: 13px; }
+    .auth-error { background: rgba(233, 69, 96, 0.1); color: var(--danger); padding: 12px; border-radius: var(--r-md); font-size: 13px; margin-bottom: 16px; display: none; }
+  </style>
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="brand__mark" style="width: 40px; height: 40px;">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 3 L28 10 V22 L16 29 L4 22 V10 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="16" cy="16" r="3.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <span class="brand__name">Atlas</span>
+      </div>
+
+      <h1 class="auth-title" id="authTitle">Welcome Back</h1>
+      <p class="auth-sub" id="authSub">Sign in to access your dashboard</p>
+
+      <div class="auth-error" id="authError"></div>
+
+      <form id="authForm">
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="you@example.com" required style="font-size: 15px; padding: 14px; color:black" />
+        </div>
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="••••••••" required style="font-size: 15px; padding: 14px; color:black" />
+        </div>
+        <button type="submit" class="btn btn--primary btn--lg" id="authSubmitBtn" style="width: 100%; justify-content: center; padding: 14px; font-size: 15px;">Sign In</button>
+      </form>
+
+      <div class="auth-toggle">
+        <span id="toggleText">Don't have an account?</span>
+        <button type="button" id="toggleAuthBtn">Sign up</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase/config.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>

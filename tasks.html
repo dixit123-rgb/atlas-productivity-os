@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Atlas — Tasks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="tasks.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- =========================== SIDEBAR =========================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand">
+        <div class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 3 L28 10 V22 L16 29 L4 22 V10 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M16 3 V29 M4 10 L28 22 M28 10 L4 22" stroke="currentColor" stroke-width="1.2" opacity="0.4"/>
+            <circle cx="16" cy="16" r="3.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="brand__text">
+          <span class="brand__name">Atlas</span>
+          <span class="brand__tag">Personal OS</span>
+        </div>
+        <button class="sidebar__collapse" id="sidebarCollapse" aria-label="Collapse sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+      </div>
+
+      <nav class="sidebar__nav" aria-label="Primary">
+        <a class="nav-item" data-route="dashboard" href="index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a class="nav-item nav-item--active" data-route="tasks" href="tasks.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>Tasks</span>
+          <span class="nav-item__badge" id="navTaskCount">0</span>
+        </a>
+        <a class="nav-item" data-route="habits" href="habits.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+          <span>Habits</span>
+        </a>
+        <a class="nav-item" data-route="goals" href="goals.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <span>Goals</span>
+        </a>
+        <a class="nav-item" data-route="calendar" href="calendar.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span>Calendar</span>
+        </a>
+        <a class="nav-item" data-route="notes" href="notes.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+          <span>Notes</span>
+        </a>
+        <a class="nav-item" data-route="analytics" href="analytics.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
+          <span>Analytics</span>
+        </a>
+        <a class="nav-item" data-route="focus" href="focus.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M5 3 2 6M19 3l3 3"/></svg>
+          <span>Focus Timer</span>
+        </a>
+
+        <div class="nav-divider"></div>
+
+        <a class="nav-item" data-route="settings" href="settings.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar__footer">
+        <div class="sidebar__card">
+          <div class="sidebar__card-glow"></div>
+          <div class="sidebar__card-title">Focus Mode</div>
+          <p class="sidebar__card-desc">Hide distractions and dive into deep work for the next 90 minutes.</p>
+          <button class="btn btn--ghost btn--sm" data-action="focus-mode">Activate</button>
+        </div>
+        <button class="user-pill" id="userPill">
+          <span class="user-pill__avatar">AX</span>
+          <span class="user-pill__info">
+            <span class="user-pill__name">Alex Mercer</span>
+            <span class="user-pill__plan">Pro Plan</span>
+          </span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar__overlay" id="sidebarOverlay"></div>
+
+    <!-- =========================== MAIN =========================== -->
+    <div class="main">
+      <!-- ========================= TOPBAR ========================= -->
+      <header class="topbar">
+        <button class="topbar__menu" id="menuToggle" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+
+        <div class="search search--tasks">
+          <svg class="search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="search__input" placeholder="Search tasks..." id="searchInput" />
+        </div>
+
+        <div class="topbar__right">
+          <div class="clock">
+            <span class="clock__date" id="clockDate">—</span>
+            <span class="clock__time" id="clockTime">--:--:--</span>
+          </div>
+          <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <button class="avatar-btn" aria-label="Account">
+            <span class="avatar-btn__img">AX</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- ========================= CONTENT ========================= -->
+      <main class="content tasks-content">
+        
+        <!-- Page Header -->
+        <section class="page-header" data-anim>
+          <div class="page-header__info">
+            <h1 class="page-title">Task Manager</h1>
+            <p class="page-subtitle" id="taskGreeting">Let's get things done today.</p>
+          </div>
+          <button class="btn btn--primary btn--lg" id="addTaskBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Add Task</span>
+          </button>
+        </section>
+
+        <!-- Statistics -->
+        <section class="task-stats" data-anim>
+          <div class="stat-mini">
+            <div class="stat-mini__icon" style="--c:#7B61FF">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <div class="stat-mini__data">
+              <span class="stat-mini__value" id="statTotal">0</span>
+              <span class="stat-mini__label">Total</span>
+            </div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini__icon" style="--c:#4AB58B">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+            </div>
+            <div class="stat-mini__data">
+              <span class="stat-mini__value" id="statCompleted">0</span>
+              <span class="stat-mini__label">Done</span>
+            </div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini__icon" style="--c:#F5A623">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div class="stat-mini__data">
+              <span class="stat-mini__value" id="statPending">0</span>
+              <span class="stat-mini__label">Pending</span>
+            </div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini__icon" style="--c:#E94560">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+            </div>
+            <div class="stat-mini__data">
+              <span class="stat-mini__value" id="statOverdue">0</span>
+              <span class="stat-mini__label">Overdue</span>
+            </div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini__icon" style="--c:#FF5C39">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12A10 10 0 1 1 12 2"/><path d="M22 2 12 12"/></svg>
+            </div>
+            <div class="stat-mini__data">
+              <span class="stat-mini__value"><span id="statPercent">0</span>%</span>
+              <span class="stat-mini__label">Complete</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Controls -->
+        <section class="task-controls" data-anim>
+          <div class="filter-pills">
+            <button class="pill pill--active" data-filter="all">All</button>
+            <button class="pill" data-filter="today">Today</button>
+            <button class="pill" data-filter="upcoming">Upcoming</button>
+            <button class="pill" data-filter="completed">Completed</button>
+            <button class="pill pill--danger" data-filter="overdue">Overdue</button>
+          </div>
+          
+          <div class="sort-wrapper">
+            <select id="sortSelect" class="sort-select">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="priority">Priority</option>
+              <option value="dueDate">Due Date</option>
+            </select>
+            <svg class="sort-select__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+        </section>
+
+        <!-- Task List -->
+        <section class="task-list" id="taskList" data-anim>
+          <!-- Tasks injected here by JS -->
+        </section>
+
+        <!-- Empty State -->
+        <section class="empty-state" id="emptyState" hidden>
+          <div class="empty-state__illu">
+            <svg viewBox="0 0 200 160" fill="none">
+              <circle cx="100" cy="80" r="60" fill="var(--bg-subtle)" stroke="var(--border)"/>
+              <path d="M70 80l20 20 40-40" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="160" cy="40" r="12" fill="var(--accent-2)"/>
+              <circle cx="30" cy="120" r="8" fill="var(--accent-3)"/>
+            </svg>
+          </div>
+          <h2 class="empty-state__title">All Clear!</h2>
+          <p class="empty-state__text">You have no tasks in this view. Time to relax or add a new goal.</p>
+          <button class="btn btn--primary" id="emptyAddBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            Add Task
+          </button>
+        </section>
+
+        <footer class="content__foot">
+          <span>Atlas Personal OS · v1.0.0</span>
+          <span>Synced just now · All systems operational</span>
+        </footer>
+      </main>
+    </div>
+
+    <!-- =========================== ADD/EDIT MODAL =========================== -->
+    <div class="modal-overlay" id="taskModalOverlay">
+      <div class="modal" id="taskModal" role="dialog" aria-labelledby="modalTitle">
+        <header class="modal__head">
+          <h2 class="modal__title" id="modalTitle">Add Task</h2>
+          <button class="icon-btn" id="closeModalBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </header>
+        <form class="modal__body" id="taskForm">
+          <input type="hidden" id="taskId" />
+          
+          <div class="form-group">
+            <label for="taskTitle">Title</label>
+            <input type="text" id="taskTitle" placeholder="e.g. Finish quarterly report" required />
+          </div>
+
+          <div class="form-group">
+            <label for="taskDesc">Description</label>
+            <textarea id="taskDesc" rows="3" placeholder="Add details..."></textarea>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="taskCategory">Category</label>
+              <div class="select-wrap">
+                <select id="taskCategory">
+                  <option value="work">Work</option>
+                  <option value="personal">Personal</option>
+                  <option value="health">Health</option>
+                  <option value="learning">Learning</option>
+                  <option value="finance">Finance</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="taskPriority">Priority</label>
+              <div class="select-wrap">
+                <select id="taskPriority">
+                  <option value="low">Low</option>
+                  <option value="med" selected>Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="taskDueDate">Due Date</label>
+              <input type="date" id="taskDueDate" />
+            </div>
+            <div class="form-group">
+              <label for="taskDueTime">Due Time</label>
+              <input type="time" id="taskDueTime" />
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="taskReminder">Reminder</label>
+              <div class="select-wrap">
+                <select id="taskReminder">
+                  <option value="none">None</option>
+                  <option value="0">At time of event</option>
+                  <option value="15">15 min before</option>
+                  <option value="60">1 hour before</option>
+                  <option value="1440">1 day before</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="taskDuration">Est. Duration (min)</label>
+              <input type="number" id="taskDuration" min="5" step="5" placeholder="30" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="taskNotes">Notes</label>
+            <textarea id="taskNotes" rows="2" placeholder="Any extra context..."></textarea>
+          </div>
+
+          <div class="modal__footer">
+            <button type="button" class="btn btn--ghost" id="cancelModalBtn">Cancel</button>
+            <button type="submit" class="btn btn--primary">Save Task</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- =========================== DELETE MODAL =========================== -->
+    <div class="modal-overlay" id="deleteModalOverlay">
+      <div class="modal modal--sm" id="deleteModal" role="dialog">
+        <div class="modal__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+        </div>
+        <h2 class="modal__title">Delete Task?</h2>
+        <p class="modal__text">Are you sure you want to delete this task? This action cannot be undone.</p>
+        <div class="modal__footer">
+          <button class="btn btn--ghost" id="cancelDeleteBtn">Cancel</button>
+          <button class="btn btn--danger" id="confirmDeleteBtn">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================== TOAST =========================== -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+    <!-- Add these right before tasks.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase/config.js"></script>
+  <script src="script.js"></script>
+  <script src="tasks.js"></script>
+
+</body>
+</html>

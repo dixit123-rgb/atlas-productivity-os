@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atlas — Personal Productivity OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ============================= APP SHELL ============================= -->
+  <div class="app">
+    <!-- =========================== SIDEBAR =========================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand">
+        <div class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 3 L28 10 V22 L16 29 L4 22 V10 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M16 3 V29 M4 10 L28 22 M28 10 L4 22" stroke="currentColor" stroke-width="1.2" opacity="0.4"/>
+            <circle cx="16" cy="16" r="3.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="brand__text">
+          <span class="brand__name">Atlas</span>
+          <span class="brand__tag">Personal OS</span>
+        </div>
+        <button class="sidebar__collapse" id="sidebarCollapse" aria-label="Collapse sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+      </div>
+
+      <nav class="sidebar__nav" aria-label="Primary">
+       <a class="nav-item nav-item--active" data-route="dashboard" href="index.html">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+  <span>Dashboard</span>
+</a>
+<a class="nav-item" data-route="tasks" href="tasks.html">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+  <span>Tasks</span>
+  <span class="nav-item__badge">.</span>
+</a>
+       <a class="nav-item"  href="habits.html">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+  <span>Habits</span>
+</a>
+        <a class="nav-item"  href="goals.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <span>Goals</span>
+        </a>
+        <a class="nav-item" href="calendar.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span>Calendar</span>
+        </a>
+        <a class="nav-item"  href="notes.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+          <span>Notes</span>
+        </a>
+        <a class="nav-item"  href="analytics.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
+          <span>Analytics</span>
+        </a>
+        <a class="nav-item" data-route="focus" href="focus.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M5 3 2 6M19 3l3 3"/></svg>
+          <span>Focus Timer</span>
+        </a>
+
+        <div class="nav-divider"></div>
+
+        <a class="nav-item" data-route="settings" href="settings.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar__footer">
+        <div class="sidebar__card">
+          <div class="sidebar__card-glow"></div>
+          <div class="sidebar__card-title">Focus Mode</div>
+          <p class="sidebar__card-desc">Hide distractions and dive into deep work for the next 90 minutes.</p>
+          <button class="btn btn--ghost btn--sm" data-action="focus-mode">Activate</button>
+        </div>
+        <button class="user-pill" id="userPill">
+          <span class="user-pill__avatar">AX</span>
+          <span class="user-pill__info">
+            <span class="user-pill__name">Alex Mercer</span>
+            <span class="user-pill__plan">Pro Plan</span>
+          </span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar__overlay" id="sidebarOverlay"></div>
+
+    <!-- =========================== MAIN =========================== -->
+    <div class="main">
+      <!-- ========================= TOPBAR ========================= -->
+      <header class="topbar">
+        <button class="topbar__menu" id="menuToggle" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+
+        <div class="search">
+          <svg class="search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="search__input" placeholder="Search tasks, notes, goals…" id="searchInput" />
+          <kbd class="search__kbd">⌘K</kbd>
+          <div class="search__results" id="searchResults" hidden></div>
+        </div>
+
+         <button class="manifest-widget" id="manifestWidgetBtn" aria-label="3 6 9 Manifestation">
+          <span class="manifest-widget__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </span>
+          <div class="manifest-widget__info">
+            <span class="manifest-widget__title">3·6·9</span>
+            <span class="manifest-widget__status" id="manifestStatus">Tap to setup</span>
+          </div>
+        </button>
+
+        <div class="topbar__right">
+          <div class="clock">
+            <span class="clock__date" id="clockDate">—</span>
+            <span class="clock__time" id="clockTime">--:--:--</span>
+          </div>
+
+                    
+          <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+
+          <button class="icon-btn icon-btn--notify" id="notifBellBtn" aria-label="Notifications" style="position: relative;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notify-dot" id="notifDot" hidden></span>
+          </button>
+
+          <button class="icon-btn" aria-label="Quick command">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6v6H9z"/></svg>
+          </button>
+
+          <button class="avatar-btn" aria-label="Account">
+            <span class="avatar-btn__img">AX</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- ========================= CONTENT ========================= -->
+      <main class="content" id="content">
+        <!-- ============== WELCOME / HERO ============== -->
+        <section class="hero" data-anim>
+          <div class="hero__bg">
+            <div class="hero__orb hero__orb--1"></div>
+            <div class="hero__orb hero__orb--2"></div>
+            <div class="hero__grid"></div>
+          </div>
+
+          <div class="hero__left">
+            <div class="hero__eyebrow">
+              <span class="dot dot--live"></span>
+              <span id="heroDayLabel">Monday, January 15</span>
+            </div>
+            <h1 class="hero__title">
+              <span class="hero__greeting" id="heroGreeting">Good morning</span>,
+              <span class="hero__name">Alex</span>
+            </h1>
+            <p class="hero__quote" id="heroQuote">
+              "Discipline equals freedom. The small choices you make today compound into the life you live tomorrow."
+            </p>
+
+            <div class="hero__mission">
+              <div class="mission__label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                Today's Mission
+              </div>
+              <p class="mission__text">Ship the design review, finish reading chapter 7, and complete a 90-minute focus block on the Atlas launch.</p>
+              <div class="mission__meta">
+                <span class="chip chip--accent">3 priorities</span>
+                <span class="chip">5h 30m planned</span>
+                <span class="chip">2 deep work blocks</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero__right">
+            <div class="ring">
+              <svg class="ring__svg" viewBox="0 0 220 220">
+                <defs>
+                  <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#FF5C39"/>
+                    <stop offset="50%" stop-color="#FF8A3D"/>
+                    <stop offset="100%" stop-color="#F5A623"/>
+                  </linearGradient>
+                  <linearGradient id="ringGradSoft" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#4AB58B"/>
+                    <stop offset="100%" stop-color="#2D8B6B"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="110" cy="110" r="92" stroke="var(--ring-track)" stroke-width="14" fill="none"/>
+                <circle class="ring__bar" cx="110" cy="110" r="92" stroke="url(#ringGrad)" stroke-width="14" fill="none" stroke-linecap="round" stroke-dasharray="578" stroke-dashoffset="578" transform="rotate(-90 110 110)"/>
+                <circle class="ring__bar ring__bar--soft" cx="110" cy="110" r="70" stroke="url(#ringGradSoft)" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="440" transform="rotate(-90 110 110)" opacity="0.5"/>
+              </svg>
+              <div class="ring__center">
+                <div class="ring__value" id="ringValue">0<span>%</span></div>
+                <div class="ring__label">Today's Progress</div>
+              </div>
+            </div>
+            <div class="ring__legend">
+              <div class="legend-item">
+                <span class="legend-dot" style="background:linear-gradient(135deg,#FF5C39,#F5A623)"></span>
+                <span>Tasks & Habits</span>
+                <strong>72%</strong>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot" style="background:linear-gradient(135deg,#4AB58B,#2D8B6B)"></span>
+                <span>Focus Time</span>
+                <strong>68%</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============== QUICK STATS ============== -->
+        <section class="stats-grid" data-anim>
+          <button class="stat-card" data-route="tasks">
+            <div class="stat-card__icon" style="--c:#FF5C39">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <div class="stat-card__body">
+  <div class="stat-card__value" id="statCompleted">0<span>/0</span></div>
+  <div class="stat-card__label">Tasks Completed</div>
+</div>
+            <div class="stat-card__trend stat-card__trend--up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l5-5 5 5M7 7l5 5 5-5"/></svg>
+              +24%
+            </div>
+          </button>
+
+          <button class="stat-card" data-route="tasks">
+            <div class="stat-card__icon" style="--c:#F5A623">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div class="stat-card__body">
+  <div class="stat-card__value" id="statPending">0</div>
+  <div class="stat-card__label">Pending Tasks</div>
+</div>
+            <div class="stat-card__trend stat-card__trend--down">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 7l5 5 5-5M7 17l5-5 5 5"/></svg>
+              -3
+            </div>
+          </button>
+
+                   <button class="stat-card" data-route="habits">
+            <div class="stat-card__icon" style="--c:#4AB58B">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+            </div>
+            <div class="stat-card__body">
+              <div class="stat-card__value" id="statHabits">0<span>/0</span></div>
+              <div class="stat-card__label">Habits Today</div>
+            </div>
+            <div class="stat-card__trend stat-card__trend--up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l5-5 5 5M7 7l5 5 5-5"/></svg>
+              67%
+            </div>
+          </button>
+
+          <button class="stat-card" data-route="habits">
+            <div class="stat-card__icon" style="--c:#E94560">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+            </div>
+            <div class="stat-card__body">
+              <div class="stat-card__value" id="statStreak">0<span> days</span></div>
+              <div class="stat-card__label">Current Streak</div>
+            </div>
+            <div class="stat-card__trend stat-card__trend--up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l5-5 5 5M7 7l5 5 5-5"/></svg>
+              Best
+            </div>
+          </button>
+
+          <button class="stat-card" data-route="analytics">
+            <div class="stat-card__icon" style="--c:#7B61FF">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+            </div>
+            <div class="stat-card__body">
+              <div class="stat-card__value">4.5<span>h</span></div>
+              <div class="stat-card__label">Study Hours</div>
+            </div>
+            <div class="stat-card__trend stat-card__trend--up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l5-5 5 5M7 7l5 5 5-5"/></svg>
+              +1.2h
+            </div>
+          </button>
+
+          <button class="stat-card" data-route="focus">
+            <div class="stat-card__icon" style="--c:#3DBDD4">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M5 3 2 6M19 3l3 3"/></svg>
+            </div>
+            <div class="stat-card__body">
+              <div class="stat-card__value">3</div>
+              <div class="stat-card__label">Focus Sessions</div>
+            </div>
+            <div class="stat-card__trend stat-card__trend--up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l5-5 5 5M7 7l5 5 5-5"/></svg>
+              2h 15m
+            </div>
+          </button>
+
+          <button class="stat-card" data-route="goals">
+            <div class="stat-card__icon" style="--c:#FF8A3D">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            </div>
+            <div class="stat-card__body">
+              <div class="stat-card__value" id="statGoalsActive">0</div>
+                <div class="stat-card__label">Active Goals</div>
+            </div>
+            <div class="stat-card__trend stat-card__trend--up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l5-5 5 5M7 7l5 5 5-5"/></svg>
+              64% avg
+            </div>
+          </button>
+        </section>
+
+        <!-- ============== TIMELINE + PRIORITY TASKS ============== -->
+        <section class="grid grid--2-1">
+          <!-- TIMELINE -->
+          <article class="card timeline" data-anim>
+            <header class="card__head">
+              <div>
+                <h2 class="card__title">Today's Timeline</h2>
+                <p class="card__sub">5 events scheduled · 2h 15m focus blocked</p>
+              </div>
+              <a class="card__link" data-route="calendar" href="#">
+                Open calendar
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </a>
+            </header>
+            <div class="timeline__list" id="timelineList"></div>
+          </article>
+
+          <!-- PRIORITY TASKS -->
+          <article class="card priorities" data-anim>
+            <header class="card__head">
+              <div>
+                <h2 class="card__title">Priority Tasks</h2>
+                <p class="card__sub">4 high-impact items today</p>
+              </div>
+              <a class="card__link" data-route="tasks" href="#">
+                All tasks
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </a>
+            </header>
+            <ul class="priorities__list" id="prioritiesList"></ul>
+          </article>
+        </section>
+
+        <!-- ============== HABITS + GOALS ============== -->
+        <section class="grid grid--2">
+          <!-- HABITS -->
+          <article class="card habits" data-anim>
+            <header class="card__head">
+              <div>
+                <h2 class="card__title">Habit Overview</h2>
+                <p class="card__sub">Today's routine · 4 of 6 complete</p>
+              </div>
+              <a class="card__link" data-route="habits" href="habits.html">
+                Manage
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </a>
+            </header>
+            <ul class="habits__list" id="habitsList"></ul>
+          </article>
+
+          <!-- GOALS -->
+          <article class="card goals" data-anim>
+            <header class="card__head">
+              <div>
+                <h2 class="card__title">Goal Progress</h2>
+                <p class="card__sub">5 active goals · 64% average</p>
+              </div>
+              <a class="card__link" data-route="goals" href="#">
+                View all
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </a>
+            </header>
+            <ul class="goals__list" id="goalsList"></ul>
+          </article>
+        </section>
+
+        <!-- ============== CALENDAR + NOTES ============== -->
+        <section class="grid grid--2-1">
+          <!-- CALENDAR -->
+          <article class="card calendar" data-anim>
+            <header class="card__head">
+              <div class="calendar__nav">
+                <button class="icon-btn icon-btn--sm" id="calPrev" aria-label="Previous month">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <h2 class="card__title" id="calTitle">January 2025</h2>
+                <button class="icon-btn icon-btn--sm" id="calNext" aria-label="Next month">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+              </div>
+              <a class="card__link" data-route="calendar" href="#">Full view</a>
+            </header>
+            <div class="calendar__weekdays">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+            <div class="calendar__grid" id="calGrid"></div>
+            <div class="calendar__events" id="calEvents"></div>
+          </article>
+
+          <!-- NOTES -->
+          <article class="card notes" data-anim>
+            <header class="card__head">
+              <div>
+                <h2 class="card__title">Recent Notes</h2>
+                <p class="card__sub">Last edited across all workspaces</p>
+              </div>
+              <button class="btn btn--primary btn--sm" data-action="add-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                New
+              </button>
+            </header>
+            <ul class="notes__list" id="notesList"></ul>
+          </article>
+        </section>
+
+        <!-- ============== ANALYTICS PREVIEW ============== -->
+        <header class="card__head">
+  <div>
+    <h2 class="card__title">Analytics Preview</h2>
+    <p class="card__sub">Your patterns over the last 7 days</p>
+  </div>
+  <a class="btn btn--primary btn--sm" href="analytics.html">
+    View Full Analytics
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;margin-left:4px;"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+  </a>
+</header>
+          <div class="analytics__grid">
+            <div class="analytics__item">
+              <div class="analytics__head">
+                <span class="analytics__label">Weekly Productivity</span>
+                <span class="analytics__value">86<span>%</span></span>
+              </div>
+              <svg class="analytics__chart" id="chartBars" viewBox="0 0 280 90" preserveAspectRatio="none"></svg>
+              <div class="analytics__days"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+            </div>
+
+            <div class="analytics__item">
+              <div class="analytics__head">
+                <span class="analytics__label">Task Completion</span>
+                <span class="analytics__value">42<span> tasks</span></span>
+              </div>
+              <svg class="analytics__chart" id="chartLine" viewBox="0 0 280 90" preserveAspectRatio="none"></svg>
+              <div class="analytics__days"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+            </div>
+
+            <div class="analytics__item">
+              <div class="analytics__head">
+                <span class="analytics__label">Habit Consistency</span>
+                <span class="analytics__value">92<span>%</span></span>
+              </div>
+              <svg class="analytics__chart" id="chartDonut" viewBox="0 0 90 90"></svg>
+              <div class="analytics__legend">
+                <span><i style="background:#4AB58B"></i>Done</span>
+                <span><i style="background:var(--track)"></i>Missed</span>
+              </div>
+            </div>
+
+            <div class="analytics__item">
+              <div class="analytics__head">
+                <span class="analytics__label">Study Hours</span>
+                <span class="analytics__value">28.5<span>h</span></span>
+              </div>
+              <svg class="analytics__chart" id="chartArea" viewBox="0 0 280 90" preserveAspectRatio="none"></svg>
+              <div class="analytics__days"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============== SMART REMINDERS ============== -->
+        <section class="card reminders" data-anim>
+          <header class="card__head">
+            <div>
+              <h2 class="card__title">Smart Reminders</h2>
+              <p class="card__sub">Things that need your attention</p>
+            </div>
+            <button class="btn btn--ghost btn--sm" data-action="snooze-all">Snooze all</button>
+          </header>
+          <div class="reminders__grid" id="remindersGrid"></div>
+        </section>
+
+        <footer class="content__foot">
+          <span>Atlas Personal OS · v1.0.0</span>
+          <span>Synced just now · All systems operational</span>
+        </footer>
+      </main>
+    </div>
+
+    <!-- =========================== FAB =========================== -->
+    <div class="fab">
+      <button class="fab__main" id="fabMain" aria-label="Quick actions">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <div class="fab__menu" id="fabMenu">
+        <button class="fab__item" data-action="add-task" style="--d:0">
+          <span class="fab__item-icon" style="--c:#FF5C39">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </span>
+          <span class="fab__item-label">Add Task</span>
+        </button>
+        <button class="fab__item" data-action="add-habit" style="--d:1">
+          <span class="fab__item-icon" style="--c:#4AB58B">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+          </span>
+          <span class="fab__item-label">Add Habit</span>
+        </button>
+        <button class="fab__item" data-action="add-goal" style="--d:2">
+          <span class="fab__item-icon" style="--c:#FF8A3D">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          </span>
+          <span class="fab__item-label">Add Goal</span>
+        </button>
+        <button class="fab__item" data-action="add-note" style="--d:3">
+          <span class="fab__item-icon" style="--c:#7B61FF">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          </span>
+          <span class="fab__item-label">Add Note</span>
+        </button>
+        <button class="fab__item" data-action="start-focus" style="--d:4">
+          <span class="fab__item-icon" style="--c:#3DBDD4">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/></svg>
+          </span>
+          <span class="fab__item-label">Start Focus</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- =========================== TOAST =========================== -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+    <!-- =========================== MANIFESTATION MODAL =========================== -->
+  <div class="modal-overlay" id="manifestModalOverlay">
+    <div class="modal" id="manifestModal" role="dialog">
+      <header class="modal__head">
+        <h2 class="modal__title" style="color: white;">3 • 6 • 9 Manifestation</h2>
+        <button class="icon-btn" id="closeManifestBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: white;"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </header>
+      <div class="modal__body" id="manifestBody">
+        
+        <!-- Setup View -->
+        <div id="manifestSetupView" hidden>
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label style="color: white;">Your Affirmation &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <textarea id="setupAffirmation" rows="3" placeholder="I am achieving my goals..." style="border-radius: 5px; background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); color: white;"></textarea>
+          </div>
+          <br>
+          <div class="form-grid">
+            <div class="form-group">
+              <label style="color: white;">Morning (3x) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <input type="time" id="setupMorningTime" value="08:00" style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); color: white; border-radius: 5px;" />
+            </div>
+            
+            <br>
+            
+
+            <div class="form-group">
+              <label style="color: white;">Afternoon (6x) &nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <input type="time" id="setupAfternoonTime" value="14:00" style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); color: white; border-radius: 5px;" />
+            </div>
+          </div>
+            <br>
+            
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label style="color: white;">Night (9x) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </label>
+            <input type="time" id="setupNightTime" value="20:00" style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); color: white; border-radius: 5px;" />
+          </div>
+          <button class="btn btn--primary btn--lg" style="width: 100%;" id="saveSetupBtn">Start Manifesting</button>
+        </div>
+
+        <!-- Dashboard View -->
+        <div id="manifestMainView" hidden>
+          <div class="manifest-affirmation">
+            <p id="manifestAffirmationText"></p>
+          </div>
+          
+          <div class="manifest-tasks">
+            <button class="manifest-task" data-phase="morning" data-count="3">
+              <div class="manifest-task__circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+              </div>
+              <div class="manifest-task__info">
+                <span class="manifest-task__title">Morning (3x)</span>
+                <span class="manifest-task__time" id="morningTimeLabel">08:00</span>
+              </div>
+            </button>
+            
+            <button class="manifest-task" data-phase="afternoon" data-count="6">
+              <div class="manifest-task__circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+              </div>
+              <div class="manifest-task__info">
+                <span class="manifest-task__title">Afternoon (6x)</span>
+                <span class="manifest-task__time" id="afternoonTimeLabel">14:00</span>
+              </div>
+            </button>
+            
+            <button class="manifest-task" data-phase="night" data-count="9">
+              <div class="manifest-task__circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+              </div>
+              <div class="manifest-task__info">
+                <span class="manifest-task__title">Night (9x)</span>
+                <span class="manifest-task__time" id="nightTimeLabel">20:00</span>
+              </div>
+            </button>
+          </div>
+          
+          <button class="btn btn--ghost btn--sm" id="editManifestBtn" style="margin-top: 16px;">Edit Affirmation & Times</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================== WRITING MODAL =========================== -->
+  <div class="modal-overlay" id="writeManifestOverlay">
+    <div class="modal modal--sm" id="writeManifestModal" role="dialog">
+      <header class="modal__head">
+        <h2 class="modal__title" id="writeManifestTitle">Write 3 Times</h2>
+      </header>
+      <div class="modal__body">
+        <p class="manifest-affirmation" style="margin-bottom: 16px; font-size: 14px; text-align: center;" id="writeAffirmationText"></p>
+        <div class="manifest-writing-area" id="manifestWritingArea"></div>
+        <button class="btn btn--primary btn--lg" style="width: 100%; margin-top: 16px;" id="completeWritingBtn">Complete</button>
+      </div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="manifestation.css" />
+  <script src="manifestation.js"></script>
+  <!-- Add these right before script.js -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase/config.js"></script>
+<script src="script.js"></script>
+
+
+</body>
+</html>

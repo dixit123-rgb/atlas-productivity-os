@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Atlas — Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="notes.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- =========================== SIDEBAR =========================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand">
+        <div class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 3 L28 10 V22 L16 29 L4 22 V10 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M16 3 V29 M4 10 L28 22 M28 10 L4 22" stroke="currentColor" stroke-width="1.2" opacity="0.4"/>
+            <circle cx="16" cy="16" r="3.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="brand__text">
+          <span class="brand__name">Atlas</span>
+          <span class="brand__tag">Personal OS</span>
+        </div>
+        <button class="sidebar__collapse" id="sidebarCollapse" aria-label="Collapse sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+      </div>
+
+      <nav class="sidebar__nav" aria-label="Primary">
+        <a class="nav-item" data-route="dashboard" href="index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a class="nav-item" data-route="tasks" href="tasks.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>Tasks</span>
+        </a>
+        <a class="nav-item" data-route="habits" href="habits.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+          <span>Habits</span>
+        </a>
+        <a class="nav-item" data-route="goals" href="goals.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <span>Goals</span>
+        </a>
+        <a class="nav-item" data-route="calendar" href="calendar.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span>Calendar</span>
+        </a>
+        <a class="nav-item nav-item--active" data-route="notes" href="notes.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+          <span>Notes</span>
+        </a>
+        <a class="nav-item" data-route="analytics" href="analytics.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
+          <span>Analytics</span>
+        </a>
+        <a class="nav-item" data-route="focus" href="focus.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M5 3 2 6M19 3l3 3"/></svg>
+          <span>Focus Timer</span>
+        </a>
+        <div class="nav-divider"></div>
+        <a class="nav-item" data-route="settings" href="settings.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar__footer">
+        <div class="sidebar__card">
+          <div class="sidebar__card-glow"></div>
+          <div class="sidebar__card-title">Focus Mode</div>
+          <p class="sidebar__card-desc">Hide distractions and dive into deep work for the next 90 minutes.</p>
+          <button class="btn btn--ghost btn--sm" data-action="focus-mode">Activate</button>
+        </div>
+        <button class="user-pill" id="userPill">
+          <span class="user-pill__avatar">AX</span>
+          <span class="user-pill__info">
+            <span class="user-pill__name">Alex Mercer</span>
+            <span class="user-pill__plan">Pro Plan</span>
+          </span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar__overlay" id="sidebarOverlay"></div>
+
+    <!-- =========================== MAIN =========================== -->
+    <div class="main">
+      <header class="topbar">
+        <button class="topbar__menu" id="menuToggle" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+        <div class="search search--notes">
+          <svg class="search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="search__input" placeholder="Search notes..." id="searchInput" />
+        </div>
+        <div class="topbar__right">
+          <div class="clock">
+            <span class="clock__date" id="clockDate">—</span>
+            <span class="clock__time" id="clockTime">--:--:--</span>
+          </div>
+          <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <button class="avatar-btn" aria-label="Account">
+            <span class="avatar-btn__img">AX</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="content notes-content">
+        <section class="page-header" data-anim>
+          <div class="page-header__info">
+            <h1 class="page-title">Notes</h1>
+            <p class="page-subtitle">Capture your thoughts and ideas.</p>
+          </div>
+          <button class="btn btn--primary btn--lg" id="addNoteBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Add Note</span>
+          </button>
+        </section>
+
+        <section class="task-controls" data-anim>
+          <div class="filter-pills">
+            <button class="pill pill--active" data-filter="all">All</button>
+            <button class="pill" data-filter="pinned">Pinned</button>
+            <button class="pill" data-filter="favorite">Favorites</button>
+            <button class="pill" data-filter="archived">Archive</button>
+            <button class="pill pill--danger" data-filter="trash">Trash</button>
+          </div>
+          <div class="view-toggle">
+            <button class="icon-btn icon-btn--sm" id="viewGrid" aria-label="Grid view">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </button>
+            <button class="icon-btn icon-btn--sm" id="viewList" aria-label="List view">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+            </button>
+          </div>
+        </section>
+
+        <section class="note-list" id="noteList" data-anim></section>
+
+        <section class="empty-state" id="emptyState" hidden>
+          <div class="empty-state__illu">
+            <svg viewBox="0 0 200 160" fill="none">
+              <path d="M40 40h80l40 40v80h-120z" fill="var(--bg-subtle)" stroke="var(--border)"/>
+              <path d="M120 40v40h40" stroke="var(--border)"/>
+              <path d="M60 90h80M60 110h80M60 70h40" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h2 class="empty-state__title">No Notes Found</h2>
+          <p class="empty-state__text">Create your first note to start capturing ideas.</p>
+          <button class="btn btn--primary" id="emptyAddBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            Add Note
+          </button>
+        </section>
+
+        <footer class="content__foot">
+          <span>Atlas Personal OS · v1.0.0</span>
+          <span>Synced just now · All systems operational</span>
+        </footer>
+      </main>
+    </div>
+
+    <!-- =========================== ADD/EDIT MODAL =========================== -->
+    <div class="modal-overlay" id="noteModalOverlay">
+      <div class="modal" id="noteModal" role="dialog" aria-labelledby="modalTitle">
+        <header class="modal__head">
+          <input type="text" id="noteTitleInput" class="modal__title-input" placeholder="Untitled Note" />
+          <button class="icon-btn" id="closeModalBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </header>
+        <div class="modal__body note-editor">
+          <input type="hidden" id="noteId" />
+          
+          <div class="note-editor__toolbar">
+            <div class="form-group" style="flex-direction: row; align-items: center; gap: 8px;">
+              <label for="noteCategory" style="margin: 0;">Category</label>
+              <div class="select-wrap" style="flex: 1;">
+                <select id="noteCategory">
+                  <option value="general">General</option>
+                  <option value="work">Work</option>
+                  <option value="personal">Personal</option>
+                  <option value="ideas">Ideas</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" style="flex-direction: row; align-items: center; gap: 8px;">
+              <label for="noteColor" style="margin: 0;">Color</label>
+              <input type="color" id="noteColor" value="#FF5C39" style="width: 40px; height: 32px; padding: 2px; cursor: pointer; border: none; background: transparent;" />
+            </div>
+          </div>
+
+          <textarea id="noteContent" class="note-editor__content" placeholder="Start typing..."></textarea>
+          
+          <div class="form-group">
+            <label for="noteTags">Tags (comma separated)</label>
+            <input type="text" id="noteTags" placeholder="e.g. project, urgent" />
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="noteGoalLink">Link Goal</label>
+              <div class="select-wrap">
+                <select id="noteGoalLink"><option value="">None</option></select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="noteTaskLink">Link Task</label>
+              <div class="select-wrap">
+                <select id="noteTaskLink"><option value="">None</option></select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="noteHabitLink">Link Habit</label>
+              <div class="select-wrap">
+                <select id="noteHabitLink"><option value="">None</option></select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="noteEventLink">Link Event</label>
+              <div class="select-wrap">
+                <select id="noteEventLink"><option value="">None</option></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal__footer">
+            <div class="note-editor__meta">
+              <button type="button" class="icon-btn icon-btn--sm" id="pinBtn" title="Pin Note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17v5M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>
+              </button>
+              <button type="button" class="icon-btn icon-btn--sm" id="favBtn" title="Favorite Note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              </button>
+              <span id="noteMetaText" class="note-meta-text">0 characters · Not saved yet</span>
+            </div>
+            <button type="button" class="btn btn--ghost" id="cancelModalBtn">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================== DELETE MODAL =========================== -->
+    <div class="modal-overlay" id="deleteModalOverlay">
+      <div class="modal modal--sm" id="deleteModal" role="dialog">
+        <div class="modal__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+        </div>
+        <h2 class="modal__title">Delete Note?</h2>
+        <p class="modal__text">Are you sure you want to permanently delete this note? This action cannot be undone.</p>
+        <div class="modal__footer">
+          <button class="btn btn--ghost" id="cancelDeleteBtn">Cancel</button>
+          <button class="btn btn--danger" id="confirmDeleteBtn">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase/config.js"></script>
+  <script src="script.js"></script>
+  <script src="notes.js"></script>
+</body>
+</html>

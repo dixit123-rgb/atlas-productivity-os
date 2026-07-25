@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Atlas — Notifications</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="notifications.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- =========================== SIDEBAR =========================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand">
+        <div class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 3 L28 10 V22 L16 29 L4 22 V10 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M16 3 V29 M4 10 L28 22 M28 10 L4 22" stroke="currentColor" stroke-width="1.2" opacity="0.4"/>
+            <circle cx="16" cy="16" r="3.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="brand__text">
+          <span class="brand__name">Atlas</span>
+          <span class="brand__tag">Personal OS</span>
+        </div>
+        <button class="sidebar__collapse" id="sidebarCollapse" aria-label="Collapse sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+      </div>
+
+      <nav class="sidebar__nav" aria-label="Primary">
+        <a class="nav-item" data-route="dashboard" href="index.html">
+            <span>Dashboard</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        </a>
+        <a class="nav-item" data-route="tasks" href="tasks.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>Tasks</span>
+        </a>
+        <a class="nav-item" data-route="habits" href="habits.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+          <span>Habits</span>
+        </a>
+        <a class="nav-item" data-route="goals" href="goals.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <span>Goals</span>
+        </a>
+        <a class="nav-item" data-route="calendar" href="calendar.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span>Calendar</span>
+        </a>
+        <a class="nav-item" data-route="notes" href="notes.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+          <span>Notes</span>
+        </a>
+        <a class="nav-item" data-route="analytics" href="analytics.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
+          <span>Analytics</span>
+        </a>
+        <a class="nav-item" data-route="focus" href="focus.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M5 3 2 6M19 3l3 3"/></svg>
+          <span>Focus Timer</span>
+        </a>
+        <div class="nav-divider"></div>
+        <a class="nav-item" data-route="settings" href="settings.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar__footer">
+        <button class="user-pill" id="userPill">
+          <span class="user-pill__avatar">AX</span>
+          <span class="user-pill__info">
+            <span class="user-pill__name">Alex Mercer</span>
+            <span class="user-pill__plan">Pro Plan</span>
+          </span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar__overlay" id="sidebarOverlay"></div>
+
+    <!-- =========================== MAIN =========================== -->
+    <div class="main">
+      <header class="topbar">
+        <button class="topbar__menu" id="menuToggle" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+        <div class="search">
+          <svg class="search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="search__input" placeholder="Search notifications..." id="searchInput" />
+        </div>
+        <div class="topbar__right">
+          <div class="clock">
+            <span class="clock__date" id="clockDate">—</span>
+            <span class="clock__time" id="clockTime">--:--:--</span>
+          </div>
+          <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="content notif-content">
+        <section class="page-header" data-anim>
+          <div class="page-header__info">
+            <h1 class="page-title">Notifications</h1>
+            <p class="page-subtitle">Your centralized activity hub.</p>
+          </div>
+          <div class="notif-actions">
+            <button class="btn btn--ghost btn--sm" id="clearReadBtn">Clear Read</button>
+            <button class="btn btn--ghost btn--sm" id="clearAllBtn">Clear All</button>
+          </div>
+        </section>
+
+        <section class="task-controls" data-anim>
+          <div class="filter-pills">
+            <button class="pill pill--active" data-filter="all">All</button>
+            <button class="pill" data-filter="unread">Unread</button>
+            <button class="pill" data-filter="today">Today</button>
+            <button class="pill" data-filter="archived">Archived</button>
+            <button class="pill" data-filter="pinned">Pinned</button>
+          </div>
+        </section>
+
+        <section class="task-list" id="notifList" data-anim></section>
+
+        <section class="empty-state" id="emptyState" hidden>
+          <div class="empty-state__illu">
+            <svg viewBox="0 0 200 160" fill="none">
+              <path d="M100 40c-10 0-20 5-20 20v30l-10 10v10h60v-10l-10-10V60c0-15-10-20-20-20z" fill="var(--bg-subtle)" stroke="var(--border)"/>
+              <path d="M90 120h20" stroke="var(--border)"/>
+              <circle cx="100" cy="35" r="5" fill="var(--accent)"/>
+            </svg>
+          </div>
+          <h2 class="empty-state__title">You're All Caught Up!</h2>
+          <p class="empty-state__text">No notifications in this category right now.</p>
+        </section>
+
+        <footer class="content__foot">
+          <span>Atlas Personal OS · v1.0.0</span>
+          <span>Synced just now</span>
+        </footer>
+      </main>
+    </div>
+
+    <!-- =========================== SNOOZE MODAL =========================== -->
+    <div class="modal-overlay" id="snoozeModalOverlay">
+      <div class="modal modal--sm" id="snoozeModal" role="dialog">
+        <header class="modal__head">
+          <h2 class="modal__title">Snooze Notification</h2>
+          <button class="icon-btn" id="closeSnoozeBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </header>
+        <div class="modal__body">
+          <div class="snooze-options">
+            <button class="btn btn--ghost" data-mins="10">10 Minutes</button>
+            <br>
+            <button class="btn btn--ghost" data-mins="30">30 Minutes</button>
+            <br>
+            <button class="btn btn--ghost" data-mins="60">1 Hour</button>
+            <br>
+            <button class="btn btn--ghost" data-mins="1440">Tomorrow Morning</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase/config.js"></script>
+  <script src="script.js"></script>
+  <script src="notifications.js"></script>
+</body>
+</html>
