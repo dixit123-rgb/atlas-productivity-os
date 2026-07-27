@@ -553,3 +553,45 @@
 @media (min-width: 1024px) {
   .page-title { font-size: 40px; }
 }   
+
+
+/* ---------- DATE SELECTOR ---------- */
+.date-selector-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--fg-muted);
+}
+
+.date-input {
+  padding: 8px 12px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--fg);
+  font-family: var(--font-ui);
+  font-size: 14px;
+}
+
+/* ---------- LOCKED HABIT CARDS ---------- */
+.habit-card--locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.habit-card--locked .habit-card__check {
+  pointer-events: none;
+  background: var(--bg-subtle);
+  border-color: var(--border);
+}
+
+.habit-card__lock-icon {
+  margin-left: auto;
+  color: var(--fg-subtle);
+}
+
+.habit-card__lock-icon svg {
+  width: 16px;
+  height: 16px;
+}

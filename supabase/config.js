@@ -93,6 +93,7 @@ window.TaskService = {
       progress: dbTask.progress || 0,
       status: dbTask.status || 'pending',
       done: dbTask.completed || false,
+      completedAt: dbTask.completed_at ? new Date(dbTask.completed_at).getTime() : null, // ADDED THIS LINE
       createdAt: new Date(dbTask.created_at).getTime()
     };
   },
@@ -112,6 +113,7 @@ window.TaskService = {
     if (jsTask.progress !== undefined) dbData.progress = jsTask.progress;
     if (jsTask.status !== undefined) dbData.status = jsTask.status;
     if (jsTask.done !== undefined) dbData.completed = jsTask.done;
+    if (jsTask.completedAt !== undefined) dbData.completed_at = jsTask.completedAt ? new Date(jsTask.completedAt).toISOString() : null; // ADDED
     return dbData;
   }
 };
@@ -160,6 +162,53 @@ window.HabitService = {
     
     if (error) throw error;
     return true;
+  },
+
+    async getCompletions() {
+    const { data, error } = await window.supabaseClient
+      .from('habit_completions')
+      .select('habit_id, completion_date')
+      .order('completion_date', { ascending: true });
+    
+    if (error) throw error;
+    return data; // Returns array of { habit_id: '...', completion_date: 'YYYY-MM-DD' }
+  },
+
+    async toggleCompletion(habitId, dateStr) {
+    // Get current user to explicitly pass user_id (bulletproof)
+    const { data: { user } } = await window.supabaseClient.auth.getUser();
+    if (!user) throw new Error("Not authenticated");
+
+    // Check if record exists for this date
+    const { data: existing, error: findError } = await window.supabaseClient
+      .from('habit_completions')
+      .select('id')
+      .eq('habit_id', habitId)
+      .eq('completion_date', dateStr)
+      .maybeSingle();
+    
+    if (findError) throw findError;
+
+    if (existing) {
+      // It exists, so delete it (uncomplete)
+      const { error: delError } = await window.supabaseClient
+        .from('habit_completions')
+        .delete()
+        .eq('id', existing.id);
+      if (delError) throw delError;
+      return false; // uncompleted
+    } else {
+      // It doesn't exist, so insert it (complete)
+      const { error: insError } = await window.supabaseClient
+        .from('habit_completions')
+        .insert({ 
+          habit_id: habitId, 
+          completion_date: dateStr,
+          user_id: user.id // Explicitly set user_id
+        });
+      if (insError) throw insError;
+      return true; // completed
+    }
   },
 
   mapDbToJs(dbHabit) {

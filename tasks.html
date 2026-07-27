@@ -189,12 +189,14 @@
         <!-- Controls -->
         <section class="task-controls" data-anim>
           <div class="filter-pills">
-            <button class="pill pill--active" data-filter="all">All</button>
-            <button class="pill" data-filter="today">Today</button>
-            <button class="pill" data-filter="upcoming">Upcoming</button>
-            <button class="pill" data-filter="completed">Completed</button>
-            <button class="pill pill--danger" data-filter="overdue">Overdue</button>
-          </div>
+  <button class="pill" data-filter="all">All</button>
+  <button class="pill pill--active" data-filter="today">Today</button>
+  <button class="pill" data-filter="upcoming">Upcoming</button>
+  <button class="pill" data-filter="completed">Completed</button>
+  <button class="pill pill--danger" data-filter="overdue">Overdue</button>
+</div>
+
+
           
           <div class="sort-wrapper">
             <select id="sortSelect" class="sort-select">
@@ -276,11 +278,18 @@
             <div class="form-group">
               <label for="taskPriority">Priority</label>
               <div class="select-wrap">
-                <select id="taskPriority">
-                  <option value="low">Low</option>
-                  <option value="med" selected>Medium</option>
-                  <option value="high">High</option>
-                </select>
+                <select id="taskPriority" required>
+  <option value="1">1 (Highest)</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5" selected>5 (Medium)</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10 (Lowest)</option>
+</select>
               </div>
             </div>
           </div>

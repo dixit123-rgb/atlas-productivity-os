@@ -8,18 +8,36 @@
    ------------------------------------------------------------- */
 const DataService = {
 
-  async getDashboardStats() {
+    async getDashboardStats() {
     try {
       const tasks = await window.TaskService.getAll();
-      const total = tasks.length;
-      const completed = tasks.filter(t => t.done).length;
-      const pending = total - completed;
       const todayStr = new Date().toISOString().split('T')[0];
-      const todayTasks = tasks.filter(t => t.dueDate === todayStr && !t.done).length;
-      const overdue = tasks.filter(t => !t.done && t.dueDate && t.dueDate < todayStr).length;
-      const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+      
+      // Filter out historical completed tasks to focus on current productivity
+      const activeTasks = tasks.filter(t => !t.done || t.dueDate >= todayStr);
+      
+      const todaysTasks = activeTasks.filter(t => t.dueDate === todayStr);
+      const completedToday = todaysTasks.filter(t => t.done).length;
+      const pendingToday = todaysTasks.filter(t => !t.done).length;
+      const overdue = activeTasks.filter(t => !t.done && t.dueDate < todayStr).length;
+      const upcoming = activeTasks.filter(t => !t.done && t.dueDate > todayStr).length;
+      
+      const totalActive = activeTasks.length;
+      const completedActive = activeTasks.filter(t => t.done).length;
+      const percent = totalActive === 0 ? 0 : Math.round((completedActive / totalActive) * 100);
 
-      return { total, completed, pending, todayTasks, overdue, percent, tasks };
+      return { 
+        total: totalActive, 
+        completed: completedActive, 
+        pending: totalActive - completedActive, 
+        todayTasks: todaysTasks.length,
+        completedToday,
+        pendingToday,
+        overdue, 
+        upcoming,
+        percent, 
+        tasks: activeTasks // Return only active tasks for charts and lists
+      };
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
       return null;
@@ -28,9 +46,22 @@ const DataService = {
 
   async getHabitsStats() {
     try {
-      const habits = await window.HabitService.getAll();
+      const [habits, completionsData] = await Promise.all([
+        window.HabitService.getAll(),
+        window.HabitService.getCompletions()
+      ]);
+      
+      const todayStr = new Date().toISOString().split('T')[0];
+      
+      // Map completions for easy lookup
+      const compMap = {};
+      completionsData.forEach(c => {
+        if (!compMap[c.habit_id]) compMap[c.habit_id] = [];
+        compMap[c.habit_id].push(c.completion_date);
+      });
+
       const total = habits.length;
-      const completedToday = habits.filter(h => h.completedToday).length;
+      const completedToday = habits.filter(h => (compMap[h.id] || []).includes(todayStr)).length;
       const maxStreak = habits.reduce((max, h) => Math.max(max, h.streak || 0), 0);
       const longestStreak = habits.reduce((max, h) => Math.max(max, h.longestStreak || 0), 0);
       const percent = total === 0 ? 0 : Math.round((completedToday / total) * 100);
@@ -41,8 +72,13 @@ const DataService = {
         icon: h.icon,
         color: h.color,
         streak: h.streak,
-        week: [1,1,1,1,1,1,1].map((v, i) => i === 6 ? (h.completedToday ? 1 : 0) : 0),
-        today: h.completedToday
+        week: [1,1,1,1,1,1,1].map((v, i) => {
+          // Calculate last 7 days for dashboard mini-view
+          const d = new Date();
+          d.setDate(d.getDate() - (6 - i));
+          return (compMap[h.id] || []).includes(d.toISOString().split('T')[0]) ? 1 : 0;
+        }),
+        today: (compMap[h.id] || []).includes(todayStr)
       }));
 
       return { total, completedToday, maxStreak, longestStreak, percent, habitsForDashboard };
@@ -899,22 +935,30 @@ async function loadDashboardData() {
   // Update Ring Progress
   Ring.init(data.percent);
 
-  // Update Task Stat Cards
+    // Update Task Stat Cards
+  const statTotalEl = $('#statTotal');
   const statCompletedEl = $('#statCompleted');
   const statPendingEl = $('#statPending');
-  if (statCompletedEl) statCompletedEl.innerHTML = `${data.completed}<span>/${data.total}</span>`;
-  if (statPendingEl) statPendingEl.textContent = data.pending;
+  const statOverdueEl = $('#statOverdue');
+  
+  // Map to new active-only stats
+  if (statTotalEl) statTotalEl.innerHTML = data.todayTasks;
+  if (statCompletedEl) statCompletedEl.innerHTML = data.completedToday;
+  if (statPendingEl) statPendingEl.innerHTML = data.pendingToday;
+  if (statOverdueEl) statOverdueEl.innerHTML = data.overdue;
 
   // Update Sidebar Badge
   const navBadge = $('#navTaskCount');
   if (navBadge) navBadge.textContent = data.pending;
 
-  // Update Priority Tasks
-  const priorityTasks = data.tasks
+    // Update Priority Tasks (Show top 5 incomplete active tasks)
+  const priorityTasks = data.tasks // data.tasks is now activeTasks from getDashboardStats
     .filter(t => !t.done)
     .sort((a, b) => {
-      const order = { high: 0, med: 1, low: 2 };
-      return order[a.priority] - order[b.priority];
+      const pA = parseInt(a.priority) || 5;
+      const pB = parseInt(b.priority) || 5;
+      if (pA !== pB) return pA - pB;
+      return new Date(a.dueDate) - new Date(b.dueDate);
     })
     .slice(0, 5);
   renderPriorities(priorityTasks);

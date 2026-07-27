@@ -4,7 +4,9 @@
 
 const State = {
   habits: [],
+  completions: {}, // Map of habitId -> array of 'YYYY-MM-DD' strings
   currentFilter: 'all',
+  selectedDate: new Date().toISOString().split('T')[0], // Defaults to today
   searchQuery: '',
   editingHabitId: null,
   deletingHabitId: null
@@ -15,6 +17,7 @@ const els = {
   emptyState: document.getElementById('emptyState'),
   searchInput: document.getElementById('searchInput'),
   filterPills: document.querySelectorAll('.pill'),
+  dateSelector: document.getElementById('habitDateSelector'),
   statTotal: document.getElementById('statTotal'),
   statCompleted: document.getElementById('statCompleted'),
   statStreak: document.getElementById('statStreak'),
@@ -42,8 +45,66 @@ function toast(message) {
   toast._timer = setTimeout(() => t.classList.remove('toast--show'), 2600);
 }
 
+function calculateStreak(completionDates) {
+  if (!completionDates || completionDates.length === 0) return 0;
+  
+  // Sort dates descending
+  const sortedDates = [...completionDates].sort((a, b) => new Date(b) - new Date(a));
+  
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const todayStr = today.toISOString().split('T')[0];
+  
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+  // If the most recent completion is not today or yesterday, streak is broken
+  if (sortedDates[0] !== todayStr && sortedDates[0] !== yesterdayStr) {
+    return 0;
+  }
+
+  let streak = 0;
+  let currentDate = new Date(sortedDates[0] + 'T00:00:00');
+
+  // Loop backwards through dates
+  for (let i = 0; i < sortedDates.length; i++) {
+    const dateStr = currentDate.toISOString().split('T')[0];
+    if (sortedDates.includes(dateStr)) {
+      streak++;
+      currentDate.setDate(currentDate.getDate() - 1);
+    } else {
+      break; // Gap found, streak ends
+    }
+  }
+
+  return streak;
+}
+
+function isDateLocked(dateStr) {
+  const selected = new Date(dateStr + 'T00:00:00');
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const diffTime = today - selected;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+  return diffDays > 7; // Locked if older than 7 days
+}
+
 function renderHabits() {
   let filtered = State.habits;
+  const selectedDate = State.selectedDate;
+  const isLocked = isDateLocked(selectedDate);
+
+  // Check completion status for the selected date
+  filtered = filtered.map(h => {
+    const completions = State.completions[h.id] || [];
+    return {
+      ...h,
+      completedToday: completions.includes(selectedDate)
+    };
+  });
 
   if (State.currentFilter === 'today') {
     filtered = filtered.filter(h => !h.completedToday);
@@ -61,15 +122,17 @@ function renderHabits() {
     els.emptyState.hidden = false;
   } else {
     els.emptyState.hidden = true;
-    els.habitList.innerHTML = filtered.map((h, i) => createHabitCardHTML(h, i)).join('');
-    attachHabitCardEvents();
+    els.habitList.innerHTML = filtered.map((h, i) => createHabitCardHTML(h, i, isLocked)).join('');
+    attachHabitCardEvents(isLocked);
   }
 }
 
-function createHabitCardHTML(habit, index) {
+function createHabitCardHTML(habit, index, isLocked) {
+  const lockIconSVG = `<div class="habit-card__lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>`;
+  
   return `
-    <article class="habit-card ${habit.completedToday ? 'habit-card--done' : ''}" data-id="${habit.id}" style="--c:${habit.color}; animation-delay: ${index * 50}ms">
-      <button class="habit-card__check" aria-label="Toggle complete">
+    <article class="habit-card ${habit.completedToday ? 'habit-card--done' : ''} ${isLocked ? 'habit-card--locked' : ''}" data-id="${habit.id}" style="--c:${habit.color}; animation-delay: ${index * 50}ms">
+      <button class="habit-card__check" aria-label="Toggle complete" ${isLocked ? 'disabled' : ''}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M5 12l5 5L20 7"/></svg>
       </button>
       <div class="habit-card__main">
@@ -83,21 +146,29 @@ function createHabitCardHTML(habit, index) {
           ${habit.longestStreak > 0 ? `<span class="habit-badge">Best: ${habit.longestStreak}</span>` : ''}
         </div>
       </div>
-      <div class="habit-actions">
-        <button class="task-action-btn" data-action="edit" aria-label="Edit habit">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        </button>
-        <button class="task-action-btn task-action-btn--delete" data-action="delete" aria-label="Delete habit">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
-        </button>
-      </div>
+      ${isLocked ? lockIconSVG : `
+        <div class="habit-actions">
+          <button class="task-action-btn" data-action="edit" aria-label="Edit habit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="task-action-btn task-action-btn--delete" data-action="delete" aria-label="Delete habit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+          </button>
+        </div>
+      `}
     </article>
   `;
 }
 
 function renderStats() {
+  const selectedDate = State.selectedDate;
   const total = State.habits.length;
-  const completed = State.habits.filter(h => h.completedToday).length;
+  
+  // Count how many are completed on the SELECTED date
+  const completed = State.habits.filter(h => {
+    return (State.completions[h.id] || []).includes(selectedDate);
+  }).length;
+  
   const maxStreak = State.habits.reduce((max, h) => Math.max(max, h.streak || 0), 0);
   const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
 
@@ -112,23 +183,28 @@ function renderAll() {
   renderStats();
 }
 
-function attachHabitCardEvents() {
+function attachHabitCardEvents(isLocked) {
   document.querySelectorAll('.habit-card').forEach(card => {
     const id = card.dataset.id;
     
-    card.querySelector('.habit-card__check').addEventListener('click', async (e) => {
-      e.stopPropagation();
-      await toggleHabitComplete(id);
-    });
+    if (!isLocked) {
+      const checkBtn = card.querySelector('.habit-card__check');
+      if (checkBtn) {
+        checkBtn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          await toggleHabitComplete(id);
+        });
+      }
 
-    card.querySelectorAll('.task-action-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const action = btn.dataset.action;
-        if (action === 'edit') openEditModal(id);
-        else if (action === 'delete') openDeleteModal(id);
+      card.querySelectorAll('.task-action-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const action = btn.dataset.action;
+          if (action === 'edit') openEditModal(id);
+          else if (action === 'delete') openDeleteModal(id);
+        });
       });
-    });
+    }
   });
 }
 
@@ -136,38 +212,32 @@ async function toggleHabitComplete(id) {
   const habit = State.habits.find(h => h.id === id);
   if (!habit) return;
 
-  const todayStr = new Date().toISOString().split('T')[0];
-  const yesterdayStr = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-  
-  let updates = {};
-  
-  if (!habit.completedToday) {
-    updates.completedToday = true;
-    updates.currentValue = habit.targetValue;
-    updates.lastCompletedAt = todayStr;
-    
-    if (habit.lastCompletedAt === yesterdayStr) {
-      updates.streak = (habit.streak || 0) + 1;
-    } else if (habit.lastCompletedAt === todayStr) {
-      updates.streak = habit.streak || 1;
-    } else {
-      updates.streak = 1;
-    }
-    updates.longestStreak = Math.max(habit.longestStreak || 0, updates.streak);
-  } else {
-    updates.completedToday = false;
-    updates.currentValue = 0;
-    if (habit.lastCompletedAt === todayStr) {
-      updates.streak = Math.max(0, (habit.streak || 1) - 1);
-      updates.lastCompletedAt = updates.streak > 0 ? yesterdayStr : null;
-    }
-  }
+  const dateStr = State.selectedDate;
+  const isCurrentlyComplete = (State.completions[id] || []).includes(dateStr);
 
   try {
-    await window.HabitService.update(id, updates);
-    Object.assign(habit, updates);
+    // 1. Toggle in Database
+    await window.HabitService.toggleCompletion(id, dateStr);
+    
+    // 2. Update Local State
+    if (!State.completions[id]) State.completions[id] = [];
+    if (isCurrentlyComplete) {
+      State.completions[id] = State.completions[id].filter(d => d !== dateStr);
+    } else {
+      State.completions[id].push(dateStr);
+    }
+    
+    // 3. Recalculate Streak
+    habit.streak = calculateStreak(State.completions[id]);
+    
+    // 4. Update Best Streak if needed
+    if (habit.streak > (habit.longestStreak || 0)) {
+      habit.longestStreak = habit.streak;
+      await window.HabitService.update(id, { longestStreak: habit.longestStreak });
+    }
+    
     renderAll();
-    toast(updates.completedToday ? 'Habit completed! 🔥' : 'Habit uncompleted');
+    toast(isCurrentlyComplete ? 'Habit uncompleted' : 'Habit completed! 🔥');
   } catch (error) {
     toast('Failed to update habit');
   }
@@ -183,10 +253,11 @@ els.filterPills.forEach(pill => {
   });
 });
 
-// Search
-if (els.searchInput) {
-  els.searchInput.addEventListener('input', () => {
-    State.searchQuery = els.searchInput.value;
+// Date Selector
+if (els.dateSelector) {
+  els.dateSelector.value = State.selectedDate; // Set default
+  els.dateSelector.addEventListener('change', () => {
+    State.selectedDate = els.dateSelector.value;
     renderHabits();
   });
 }
@@ -284,6 +355,7 @@ function openAddModal() {
   document.getElementById('habitColor').value = '#FF5C39';
   els.habitModalOverlay.classList.add('active');
   setTimeout(() => document.getElementById('habitTitle').focus(), 300);
+  // els.dateSelector.value = State.selectedDate;
 }
 
 function openEditModal(id) {
@@ -323,13 +395,32 @@ function closeDeleteModal() {
 
 async function loadHabitsData() {
   try {
-    State.habits = await window.HabitService.getAll();
+    const [habits, completionsData] = await Promise.all([
+      window.HabitService.getAll(),
+      window.HabitService.getCompletions()
+    ]);
+    
+    State.habits = habits;
+    
+    // Format completions into a map: { habitId: ['2024-07-28', '2024-07-29'] }
+    const compMap = {};
+    completionsData.forEach(c => {
+      if (!compMap[c.habit_id]) compMap[c.habit_id] = [];
+      compMap[c.habit_id].push(c.completion_date);
+    });
+    State.completions = compMap;
+
+    // Recalculate streaks for UI
+    State.habits.forEach(h => {
+      h.streak = calculateStreak(State.completions[h.id] || []);
+    });
+
   } catch (error) {
     console.error('Error loading habits:', error);
     toast('Failed to load habits.');
-    State.habits = []; // Ensure it's an empty array on failure
+    State.habits = []; 
   } finally {
-    renderAll(); // ALWAYS render, so empty state shows
+    renderAll(); 
   }
 }
 

@@ -276,13 +276,21 @@ if (els.confirmDeleteBtn) {
 }
 
 function openAddModal() {
-  State.editingGoalId = null;
-  els.modalTitle.textContent = 'Add Goal';
-  els.goalForm.reset();
-  document.getElementById('goalId').value = '';
-  document.getElementById('goalProgress').value = '0';
-  els.goalModalOverlay.classList.add('active');
-  setTimeout(() => document.getElementById('goalTitle').focus(), 300);
+  State.editingTaskId = null;
+  document.getElementById('modalTitle').textContent = 'Add Task';
+  document.getElementById('taskForm').reset();
+  document.getElementById('taskId').value = '';
+  
+  // Set default due date to Tomorrow
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('taskDueDate').value = tomorrow.toISOString().split('T')[0];
+  
+  // Default priority to 5 (Middle)
+  document.getElementById('taskPriority').value = '5'; 
+  
+  document.getElementById('taskModalOverlay').classList.add('active');
+  setTimeout(() => document.getElementById('taskTitle').focus(), 300);
 }
 
 function openEditModal(id) {

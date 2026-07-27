@@ -19,8 +19,8 @@
 // We just define UI state here.
 const State = {
   tasks: [],
-  currentFilter: 'all',
-  currentSort: 'newest',
+  currentFilter: 'today', // Must be 'today'
+  currentSort: 'priority',
   searchQuery: '',
   editingTaskId: null,
   deletingTaskId: null
@@ -115,69 +115,77 @@ const els = {
    5. RENDER FUNCTIONS
    ------------------------------------------------------------- */
 function renderTasks() {
-  let filtered = State.tasks;
+  let filtered = [...State.tasks];
+  const todayStr = new Date().toISOString().split('T')[0];
 
-  // Filter
+  // 1. Filtering Logic
   switch (State.currentFilter) {
+    
     case 'today':
-      filtered = filtered.filter(t => isToday(t.dueDate) && !t.done);
+      // Include tasks done today so they can move to the bottom, instead of disappearing
+      filtered = filtered.filter(t => t.dueDate === todayStr);
       break;
     case 'upcoming':
-      filtered = filtered.filter(t => isUpcoming(t.dueDate) && !t.done);
+      filtered = filtered.filter(t => t.dueDate > todayStr && !t.done);
       break;
     case 'completed':
       filtered = filtered.filter(t => t.done);
       break;
     case 'overdue':
-      filtered = filtered.filter(t => isOverdue(t));
+      filtered = filtered.filter(t => !t.done && t.dueDate < todayStr);
       break;
     case 'all':
     default:
+      // "All" now hides past, incomplete tasks
+      filtered = filtered.filter(t => t.dueDate >= todayStr || t.done);
       break;
   }
 
-  // Search
+  // 2. Search Logic
   if (State.searchQuery) {
     const q = State.searchQuery.toLowerCase();
     filtered = filtered.filter(t => 
       t.title.toLowerCase().includes(q) || 
-      t.desc.toLowerCase().includes(q) ||
-      t.category.toLowerCase().includes(q)
+      (t.desc && t.desc.toLowerCase().includes(q))
     );
   }
 
-  // Sort
-  switch (State.currentSort) {
-    case 'oldest':
-      filtered.sort((a, b) => a.createdAt - b.createdAt);
-      break;
-    case 'priority':
-      const order = { high: 0, med: 1, low: 2 };
-      filtered.sort((a, b) => order[a.priority] - order[b.priority]);
-      break;
-    case 'dueDate':
-      filtered.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-      break;
-    case 'newest':
-    default:
-      filtered.sort((a, b) => b.createdAt - a.createdAt);
-      break;
-  }
+  // 3. Split into Pending and Completed
+  const pending = filtered.filter(t => !t.done);
+  const completed = filtered.filter(t => t.done);
 
-  // Render
-  if (filtered.length === 0) {
+  // 4. Sorting Pending (Priority 1->10 -> Due Date -> Creation Time)
+  pending.sort((a, b) => {
+    if (a.priority !== b.priority) return parseInt(a.priority) - parseInt(b.priority);
+    if (a.dueDate !== b.dueDate) return new Date(a.dueDate) - new Date(b.dueDate);
+    return a.createdAt - b.createdAt;
+  });
+
+  // 5. Sorting Completed (Completion Time, Newest first)
+  completed.sort((a, b) => (b.completedAt || 0) - (a.completedAt || 0));
+
+  // 6. Render
+  const sortedTasks = [...pending, ...completed];
+  
+  if (sortedTasks.length === 0) {
     els.taskList.innerHTML = '';
     els.emptyState.hidden = false;
   } else {
     els.emptyState.hidden = true;
-    els.taskList.innerHTML = filtered.map((task, i) => createTaskCardHTML(task, i)).join('');
+    els.taskList.innerHTML = sortedTasks.map((t, i) => createTaskCardHTML(t, i)).join('');
     attachTaskCardEvents();
   }
+    // Pass the filtered array to renderStats so stats match the current view
+  renderStats(filtered);
 }
-
 function createTaskCardHTML(task, index) {
   const overdue = isOverdue(task);
-  const priorityClass = `task-badge--${task.priority}`;
+  const priorityNum = parseInt(task.priority) || 5; // Default to 5 if missing
+  
+  // Determine color class based on 1-10 scale
+  let priorityClass = 'task-badge--low'; // 8, 9, 10
+  if (priorityNum <= 3) priorityClass = 'task-badge--high'; // 1, 2, 3
+  else if (priorityNum <= 7) priorityClass = 'task-badge--med'; // 4, 5, 6, 7
   
   return `
     <article class="task-card ${task.done ? 'task-card--done' : ''}" data-id="${task.id}" style="animation-delay: ${index * 50}ms">
@@ -191,7 +199,7 @@ function createTaskCardHTML(task, index) {
           
           <div class="task-card__badges">
             <span class="task-badge task-badge--cat">${formatCategory(task.category)}</span>
-            <span class="task-badge ${priorityClass}">${task.priority.toUpperCase()}</span>
+            <span class="task-badge ${priorityClass}">P${priorityNum}</span>
             <span class="task-badge ${overdue ? 'task-badge--overdue' : ''}">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
               ${formatDate(task.dueDate)} ${task.dueTime || ''}
@@ -203,7 +211,7 @@ function createTaskCardHTML(task, index) {
       
       <div class="task-card__foot">
         <div class="task-progress">
-          <div class="task-progress__bar" style="width:${task.progress}%"></div>
+          <div class="task-progress__bar" style="width:${task.progress || 0}%"></div>
         </div>
         <div class="task-actions">
           <button class="task-action-btn" data-action="edit" aria-label="Edit task">
@@ -218,25 +226,35 @@ function createTaskCardHTML(task, index) {
   `;
 }
 
-function renderStats() {
-  const total = State.tasks.length;
-  const completed = State.tasks.filter(t => t.done).length;
-  const overdue = State.tasks.filter(t => isOverdue(t)).length;
+function renderStats(filtered = []) {
+  // Calculate stats strictly based on the passed 'filtered' array
+  const total = filtered.length;
+  const completed = filtered.filter(t => t.done).length;
   const pending = total - completed;
-  const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
-
-  els.statTotal.textContent = total;
-  els.statCompleted.textContent = completed;
-  els.statPending.textContent = pending;
-  els.statOverdue.textContent = overdue;
-  els.statPercent.textContent = percent;
   
-  els.navTaskCount.textContent = pending;
+  // Calculate overdue only if we are looking at a view that includes them
+  const todayStr = new Date().toISOString().split('T')[0];
+  const overdue = filtered.filter(t => !t.done && t.dueDate < todayStr).length;
+
+  if (els.statTotal) els.statTotal.textContent = total;
+  if (els.statCompleted) els.statCompleted.textContent = completed;
+  if (els.statPending) els.statPending.textContent = pending;
+  if (els.statOverdue) els.statOverdue.textContent = overdue;
+  
+  const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+  if (els.statPercent) els.statPercent.textContent = percent;
+  
+  if (els.navTaskCount) {
+    // For the sidebar badge, count all pending tasks globally (active only)
+    const allActivePending = State.tasks.filter(t => !t.done && (t.dueDate >= todayStr)).length;
+    els.navTaskCount.textContent = allActivePending;
+  }
 }
 
 function renderAll() {
   renderTasks();
-  renderStats();
+  // Do not call renderStats() here anymore. 
+  // renderTasks() now passes the filtered list to renderStats(filtered) automatically.
 }
 
 /* -------------------------------------------------------------
@@ -247,6 +265,7 @@ function attachTaskCardEvents() {
     const id = card.dataset.id;
     
     // Checkbox toggle
+        // Checkbox toggle
     card.querySelector('.task-card__check').addEventListener('click', async (e) => {
       e.stopPropagation();
       const task = State.tasks.find(t => t.id === id);
@@ -256,12 +275,13 @@ function attachTaskCardEvents() {
       const updates = { 
         done: newDone, 
         status: newDone ? 'completed' : 'pending',
-        progress: newDone ? 100 : (task.progress === 100 ? 0 : task.progress)
+        progress: newDone ? 100 : (task.progress === 100 ? 0 : task.progress),
+        completedAt: newDone ? Date.now() : null // ADDED THIS LINE
       };
       
-      await TaskService.update(id, updates);
+      await window.TaskService.update(id, updates);
       Object.assign(task, updates);
-      renderAll();
+      renderAll(); // This will re-render and move the task to the bottom
       toast(newDone ? 'Task completed 🎉' : 'Task reopened');
     });
 
@@ -385,8 +405,13 @@ function openAddModal() {
   els.modalTitle.textContent = 'Add Task';
   els.taskForm.reset();
   document.getElementById('taskId').value = '';
-  document.getElementById('taskDueDate').value = getDateString(0);
-  document.getElementById('taskPriority').value = 'med';
+  
+  // Set default due date to Tomorrow
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('taskDueDate').value = tomorrow.toISOString().split('T')[0];
+  
+  document.getElementById('taskPriority').value = '5'; // Default priority
   
   els.taskModalOverlay.classList.add('active');
   setTimeout(() => document.getElementById('taskTitle').focus(), 300);
