@@ -1010,6 +1010,55 @@ async function loadDashboardData() {
 }
 
 
+/* -------------------------------------------------------------
+   TEST NOTIFICATION LOGIC (TEMPORARY)
+   ------------------------------------------------------------- */
+function setupTestNotificationBtn() {
+  const btn = document.getElementById('testNotifBtn');
+  if (!btn) return;
+
+  btn.addEventListener('click', async () => {
+    const title = 'Atlas Productivity OS';
+    const body = '✅ Notification system is working correctly.';
+    
+    // 1. Save to Notification Center (Database)
+    try {
+      if (window.NotificationService) {
+        await window.NotificationService.create({
+          title: title,
+          message: body,
+          module: 'settings',
+          priority: 'high',
+          icon: 'bell',
+          actionUrl: 'index.html'
+        });
+      }
+    } catch (e) {
+      console.error('Failed to save test notification:', e);
+    }
+
+    // 2. Trigger OS Browser Notification
+    if (!("Notification" in window)) {
+      toast('This browser does not support desktop notifications.');
+      return;
+    }
+
+    if (Notification.permission === "granted") {
+      new Notification(title, { body: body, icon: '/favicon.ico' });
+      toast('Test notification sent!');
+    } else if (Notification.permission !== "denied") {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        new Notification(title, { body: body, icon: '/favicon.ico' });
+        toast('Test notification sent!');
+      } else {
+        toast('Notification permission denied.');
+      }
+    } else {
+      toast('Notifications are blocked. Please enable them in browser settings.');
+    }
+  });
+}
 
 /* -------------------------------------------------------------
    20. NOTIFICATION BELL LOGIC
@@ -1072,6 +1121,7 @@ async function init() {
   Search.init();
   Calendar.init();
    initNotificationBell(); // <-- ADD THIS LINE HERE
+     setupTestNotificationBtn(); // <-- ADD THIS LINE
 
   // 3. Dashboard-Specific Logic (Only run if on Dashboard)
   if ($('#timelineList')) {
