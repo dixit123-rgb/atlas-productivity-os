@@ -1062,6 +1062,10 @@ async function init() {
 
   // 2. Initialize Shared UI Components
   ThemeManager.init();
+  // Request Notification Permissions globally if not set
+  if ("Notification" in window && Notification.permission === "default") {
+    Notification.requestPermission();
+  }
   Clock.init();
   Sidebar.init();
   Fab.init();

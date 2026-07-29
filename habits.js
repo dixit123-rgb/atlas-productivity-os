@@ -48,32 +48,33 @@ function toast(message) {
 function calculateStreak(completionDates) {
   if (!completionDates || completionDates.length === 0) return 0;
   
-  // Sort dates descending
-  const sortedDates = [...completionDates].sort((a, b) => new Date(b) - new Date(a));
+  // Normalize to UTC midnight timestamps to avoid timezone string mismatch
+  const sortedDates = [...completionDates]
+    .map(d => new Date(d + 'T00:00:00').getTime())
+    .sort((a, b) => b - a);
   
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const todayStr = today.toISOString().split('T')[0];
+  const todayTime = today.getTime();
   
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayStr = yesterday.toISOString().split('T')[0];
+  const yesterdayTime = yesterday.getTime();
 
   // If the most recent completion is not today or yesterday, streak is broken
-  if (sortedDates[0] !== todayStr && sortedDates[0] !== yesterdayStr) {
+  if (sortedDates[0] !== todayTime && sortedDates[0] !== yesterdayTime) {
     return 0;
   }
 
   let streak = 0;
-  let currentDate = new Date(sortedDates[0] + 'T00:00:00');
+  let currentCheckTime = sortedDates[0];
 
   // Loop backwards through dates
   for (let i = 0; i < sortedDates.length; i++) {
-    const dateStr = currentDate.toISOString().split('T')[0];
-    if (sortedDates.includes(dateStr)) {
+    if (sortedDates[i] === currentCheckTime) {
       streak++;
-      currentDate.setDate(currentDate.getDate() - 1);
-    } else {
+      currentCheckTime -= 86400000; // Subtract 1 day in milliseconds
+    } else if (sortedDates[i] < currentCheckTime) {
       break; // Gap found, streak ends
     }
   }
