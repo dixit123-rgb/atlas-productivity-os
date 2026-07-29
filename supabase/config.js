@@ -1016,11 +1016,24 @@ window.NotificationService = {
   },
 
   async sendBrowserNotification(title, body) {
-    if (!("Notification" in window)) return;
-    if (Notification.permission === "granted") {
-      new Notification(title, { body });
+    if (!("Notification" in window)) {
+      console.log("This browser does not support desktop notification");
+      return;
     }
-    // Future: Add Push (PWA), Telegram, WhatsApp, Email hooks here
+    
+    // Check permission status
+    if (Notification.permission === "granted") {
+      new Notification(title, { 
+        body: body,
+        icon: '/favicon.ico' // Optional: ensure you have a favicon.ico in root
+      });
+    } else if (Notification.permission !== "denied") {
+      // Request permission if default
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        new Notification(title, { body: body, icon: '/favicon.ico' });
+      }
+    }
   },
 
   mapDbToJs(dbRec) {

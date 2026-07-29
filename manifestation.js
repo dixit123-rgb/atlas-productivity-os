@@ -207,7 +207,7 @@ function triggerReminder(phaseName, count, phaseKey, isMissed) {
       actionUrl: 'index.html'
     }).catch(err => console.error("Failed to create notification:", err));
     
-    // 2. Browser Notification
+    // 2. Browser Notification (Explicitly call it)
     window.NotificationService.sendBrowserNotification(title, msg);
   }
   
